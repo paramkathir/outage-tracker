@@ -112,7 +112,19 @@ mvn verify
 
 ## Load testing
 
-`loadtest/report-load.js` is a [k6](https://k6.io) script that drives 500 req/s of reports across 20 hotspots; instructions are at the top of the file.
+`loadtest/report-load.js` is a [k6](https://k6.io) script that offers 500 report submissions per second, spread across 20 hotspots and all four service types, for 60 seconds. Instructions are at the top of the file.
+
+**Measured result** (single Windows laptop running both k6 and the app, in-memory H2 database, rate limiting and duplicate suppression off):
+
+| Metric | Result |
+|---|---|
+| Requests completed | 29,160 in 60 s |
+| Sustained throughput | **486 req/s** (of 500 offered; 840 iterations dropped when k6 hit its 400-VU cap) |
+| Error rate | **0%** (every request returned 201) |
+| Median latency | **5.3 ms** |
+| p90 / p95 / p99 latency | 504 ms / 751 ms / 1.32 s |
+
+**Reading it:** the distribution is bimodal. Most requests finish in about 5 ms, but the tail sits in the hundreds of milliseconds. That's what queueing looks like: every write for a service type runs one at a time under `ServiceTypeLocks` (the price of never creating duplicate incidents), so at most four reports are processed at once, and bursts wait their turn. The fixes in [Scaling further](#scaling-further) target exactly this: a finer-grained lock per area (lock the report's grid cell plus its neighbouring cells, which keeps correctness because clustering only looks 3 km around a report, so distant neighbourhoods stop waiting on each other), PostgreSQL advisory locks across instances, or Kafka partitions keyed by service type and area.
 
 ## Scaling further
 

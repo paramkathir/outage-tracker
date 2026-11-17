@@ -1,0 +1,86 @@
+spring:
+  application:
+    name: outage-tracker
+  profiles:
+    # `mvn spring-boot:run` uses the in-memory H2 "dev" profile with demo data.
+    default: dev
+  threads:
+    virtual:
+      enabled: true   # Java 21 virtual threads for request handling, @Async and @Scheduled
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none  # Flyway owns the schema
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+  flyway:
+    enabled: true
+  mvc:
+    problemdetails:
+      enabled: true
+  jackson:
+    default-property-inclusion: non_null
+
+server:
+  port: 8080
+  shutdown: graceful
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics, prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+tracker:
+  clustering:
+    join-radius-km: 3.0
+    min-reports-to-open: 3
+    confirm-threshold: 10
+    pending-window: 30m
+    quiet-period: 45m
+    sweep-interval: 1m
+  rate-limit:
+    enabled: true
+    capacity: 5            # burst
+    refill-per-second: 0.2 # sustained: 1 request / 5 s per IP
+  reports:
+    duplicate-window: 15m
+  admin:
+    api-key: ${ADMIN_API_KEY:change-me}
+  demo:
+    seed-enabled: false
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: jdbc:h2:mem:outages;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+tracker:
+  demo:
+    seed-enabled: true
+
+---
+spring:
+  config:
+    activate:
+      on-profile: postgres
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/outages}
+    username: ${DB_USER:outages}
+    password: ${DB_PASSWORD:outages}
+tracker:
+  demo:
+    seed-enabled: ${DEMO_SEED:false}

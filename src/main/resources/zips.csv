@@ -1,0 +1,22 @@
+# Demo ZIP lookup for the Dallas–Fort Worth area: one representative point per ZIP.
+# Approximate, for demonstration only. A production deployment would call a geocoding service.
+zip,place,latitude,longitude
+75002,"Allen, TX",33.0890,-96.6110
+75013,"Allen, TX",33.1162,-96.6740
+75024,"Plano, TX",33.0754,-96.8063
+75034,"Frisco, TX",33.1507,-96.8236
+75040,"Garland, TX",32.9230,-96.6250
+75061,"Irving, TX",32.8270,-96.9630
+75070,"McKinney, TX",33.1730,-96.6950
+75074,"Plano, TX",33.0198,-96.6989
+75075,"Plano, TX",33.0230,-96.7390
+75080,"Richardson, TX",32.9483,-96.7299
+75081,"Richardson, TX",32.9480,-96.7090
+75082,"Richardson, TX",32.9925,-96.6630
+75093,"Plano, TX",33.0362,-96.8303
+75201,"Dallas, TX",32.7767,-96.7970
+75204,"Dallas, TX",32.8025,-96.7870
+75206,"Dallas, TX",32.8310,-96.7700
+75252,"Dallas, TX",32.9973,-96.7883
+76011,"Arlington, TX",32.7550,-97.0870
+76102,"Fort Worth, TX",32.7555,-97.3308

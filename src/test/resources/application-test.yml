@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:test-${random.uuid};MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+
+tracker:
+  clustering:
+    sweep-initial-delay: 1h   # tests trigger the sweep explicitly
+  rate-limit:
+    enabled: false
+  reports:
+    duplicate-window: 0s
+  admin:
+    api-key: test-admin-key
+  demo:
+    seed-enabled: false
+
+logging:
+  level:
+    io.github.paramkathir.outagetracker: WARN

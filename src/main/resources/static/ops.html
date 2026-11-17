@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Incidents · Outage Tracker Operations</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Inter+Tight:wght@600;700&display=swap">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+    <link rel="stylesheet" href="base.css">
+</head>
+<body>
+
+<header class="site-header">
+    <div class="container wide">
+        <div style="display:flex;align-items:center;gap:12px 32px;flex-wrap:wrap">
+            <a class="wordmark" href="/ops">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12.5a10 10 0 0 1 14 0"/><path d="M8.5 16a5 5 0 0 1 7 0"/><circle cx="12" cy="19.5" r="1" fill="currentColor"/></svg>
+                Outage Tracker <span class="sub">Operations</span>
+            </a>
+            <nav class="site-nav" aria-label="Operations">
+                <a href="/ops" aria-current="page">Incidents</a>
+                <a href="/" target="_blank" rel="noopener">Public status page</a>
+            </nav>
+        </div>
+        <span class="live" id="live"><span class="dot" aria-hidden="true"></span><span id="live-text">Live</span></span>
+    </div>
+</header>
+
+<main class="ops-main container wide">
+    <div class="ops-title">
+        <div>
+            <h1>Incidents</h1>
+            <p>Dallas–Fort Worth service area</p>
+        </div>
+        <div class="segmented" role="group" aria-label="Show incidents">
+            <button class="btn btn-small" type="button" data-scope="ACTIVE" aria-pressed="true">Open</button>
+            <button class="btn btn-small" type="button" data-scope="RESOLVED" aria-pressed="false">Resolved</button>
+            <button class="btn btn-small" type="button" data-scope="ALL" aria-pressed="false">All</button>
+        </div>
+    </div>
+
+    <dl class="kpis" id="kpis" aria-live="polite">
+        <div><dt>Open incidents</dt><dd>–</dd></div>
+        <div><dt>Confirmed</dt><dd>–</dd></div>
+        <div><dt>Reports, last hour</dt><dd>–</dd></div>
+        <div><dt>Services affected</dt><dd>–</dd></div>
+    </dl>
+
+    <div class="ops-grid">
+        <section class="ops-table-wrap" aria-label="Incident list">
+            <div class="table-box">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Incident</th>
+                        <th scope="col">Service</th>
+                        <th scope="col">Status</th>
+                        <th scope="col" class="num">Reports</th>
+                        <th scope="col" class="num">Area</th>
+                        <th scope="col">Started</th>
+                        <th scope="col">Last report</th>
+                    </tr>
+                    </thead>
+                    <tbody id="incident-rows">
+                    <tr class="empty-row"><td colspan="7">Loading incidents…</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <figure class="figure ops-map-wrap">
+            <div id="ops-map" class="map" role="img" aria-label="Map of incidents"></div>
+            <figcaption class="legend">
+                <span><i class="swatch outage" aria-hidden="true"></i>Confirmed</span>
+                <span><i class="swatch suspect" aria-hidden="true"></i>Suspected</span>
+            </figcaption>
+        </figure>
+    </div>
+
+    <section class="detail" id="detail" aria-live="polite" hidden></section>
+</main>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script src="common.js"></script>
+<script src="ops.js"></script>
+</body>
+</html>

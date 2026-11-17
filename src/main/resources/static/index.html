@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Service status · Outage Tracker</title>
+    <meta name="description" content="Check whether internet, TV, phone or mobile service is down in your area.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Inter+Tight:wght@600;700&display=swap">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+    <link rel="stylesheet" href="base.css">
+</head>
+<body>
+
+<header class="site-header">
+    <div class="container">
+        <a class="wordmark" href="/">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12.5a10 10 0 0 1 14 0"/><path d="M8.5 16a5 5 0 0 1 7 0"/><circle cx="12" cy="19.5" r="1" fill="currentColor"/></svg>
+            Outage Tracker
+        </a>
+        <nav class="site-nav" aria-label="Primary">
+            <a href="#map">Outage map</a>
+            <a href="#report">Report a problem</a>
+            <a href="#alerts">Alerts</a>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <section class="hero container" aria-labelledby="hero-title">
+        <form id="lookup" class="lookup">
+            <label class="field">
+                ZIP code
+                <input id="zip" class="input" name="zip" inputmode="numeric" autocomplete="postal-code"
+                       maxlength="5" pattern="\d{5}" list="zip-options" required>
+            </label>
+            <datalist id="zip-options"></datalist>
+            <button class="btn" type="submit">Check status</button>
+            <button class="btn btn-text" type="button" id="locate">Use my location</button>
+            <span class="place-line" id="place-line" aria-live="polite"></span>
+        </form>
+
+        <div id="hero">
+            <div class="hero-copy">
+                <h1 id="hero-title" class="loading">Checking your area…</h1>
+            </div>
+        </div>
+    </section>
+
+    <section class="band" id="map" aria-label="Reports and affected area">
+        <div class="container">
+            <figure class="figure">
+                <figcaption class="figure-title">
+                    <strong>Reports near you</strong>
+                    <span>Per hour, last 24 hours, within 3 km</span>
+                </figcaption>
+                <div id="chart" class="bars" role="img" aria-label="Reports per hour"></div>
+                <div id="chart-axis" class="axis" aria-hidden="true"></div>
+            </figure>
+
+            <figure class="figure">
+                <figcaption class="figure-title">
+                    <strong>Affected area</strong>
+                    <span>Based on where reports are coming from</span>
+                </figcaption>
+                <div id="map-canvas" class="map" role="img" aria-label="Map of your area"></div>
+                <div id="map-legend" class="legend"></div>
+            </figure>
+        </div>
+    </section>
+
+    <section class="updates container" id="updates-section" hidden aria-labelledby="updates-title">
+        <h2 id="updates-title">Updates</h2>
+        <ol class="timeline" id="updates"></ol>
+    </section>
+
+    <section class="actions">
+        <div class="container">
+            <form class="action" id="report">
+                <div>
+                    <h2 id="report-title">Having a different problem?</h2>
+                    <p id="report-copy">Tell us what's not working. Reports from your neighbors help us find outages faster.</p>
+                </div>
+                <div class="inline-fields">
+                    <label class="field">
+                        Service
+                        <select class="select" id="report-service">
+                            <option value="INTERNET">Internet</option>
+                            <option value="TV">TV</option>
+                            <option value="PHONE">Home phone</option>
+                            <option value="MOBILE">Mobile</option>
+                        </select>
+                    </label>
+                    <button class="btn btn-primary" type="submit">Report a problem</button>
+                </div>
+            </form>
+
+            <form class="action" id="alerts">
+                <div>
+                    <h2>Get notified</h2>
+                    <p>We'll email you when an outage near you is confirmed, and again when it's fixed.</p>
+                </div>
+                <div class="inline-fields">
+                    <label class="field">
+                        Email
+                        <input class="input" type="email" id="alert-email" autocomplete="email" placeholder="you@example.com" required>
+                    </label>
+                    <button class="btn" type="submit">Notify me</button>
+                </div>
+            </form>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container">
+        <span>Status is based on customer reports and updates from our team.</span>
+        <a href="/ops">Operator dashboard</a>
+    </div>
+</footer>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script src="common.js"></script>
+<script src="status.js"></script>
+</body>
+</html>
